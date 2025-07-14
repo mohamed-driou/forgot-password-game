@@ -14,14 +14,10 @@ const updateProfileForm = document.getElementById('updateProfileForm');
 const logoutBtn = document.getElementById('logoutBtn');
 const profileInfo = document.getElementById('profileInfo');
 
-// Password visibility toggle elements
-const showLoginPassword = document.getElementById('showLoginPassword');
-const showRegisterPassword = document.getElementById('showRegisterPassword');
-
 // Utility function for displaying errors
 function showError(message, type = 'error') {
   const errorElement = document.getElementById('authError') || createErrorElement();
-  errorElement.textContent = message;
+  errorElement.innerHTML = message;
   errorElement.style.display = 'block';
   errorElement.style.background = type === 'success' ? '#2ecc71' : '#e74c3c';
   setTimeout(() => errorElement.style.display = 'none', 5000);
@@ -46,34 +42,82 @@ function createErrorElement() {
   return errorDiv;
 }
 
-// Password visibility toggle handler
-function setupPasswordToggle(button, inputId) {
-  if (!button) return;
+// Password validation function
+function validatePassword(password) {
+  const errors = [];
   
-  const input = document.getElementById(inputId);
-  const icon = button.querySelector('i');
+  if (password.length < 8) {
+    errors.push('• At least 8 characters');
+  }
   
-  button.addEventListener('click', () => {
-    if (input.type === 'password') {
-      input.type = 'text';
-      icon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-      input.type = 'password';
-      icon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-  });
+  if (!/\d/.test(password)) {
+    errors.push('• At least one number (0-9)');
+  }
+  
+  if (!/[A-Z]/.test(password)) {
+    errors.push('• At least one uppercase letter (A-Z)');
+  }
+
+  return errors;
 }
 
-// Initialize password toggles
-setupPasswordToggle(showLoginPassword, 'password');
-setupPasswordToggle(showRegisterPassword, 'password');
+// Password visibility toggle handler (FIXED VERSION)
+function setupPasswordToggles() {
+  // Register form toggle
+  const registerToggle = document.getElementById('showRegisterPassword');
+  const registerInput = document.getElementById('password');
+  
+  if (registerToggle && registerInput) {
+    registerToggle.addEventListener('click', () => {
+      const icon = registerToggle.querySelector('i');
+      if (registerInput.type === 'password') {
+        registerInput.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        registerInput.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+      registerInput.focus();
+    });
+  }
 
-// Handle registration
+  // Login form toggle (if exists)
+  const loginToggle = document.getElementById('showLoginPassword');
+  const loginInput = document.getElementById('loginPassword');
+  
+  if (loginToggle && loginInput) {
+    loginToggle.addEventListener('click', () => {
+      const icon = loginToggle.querySelector('i');
+      if (loginInput.type === 'password') {
+        loginInput.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        loginInput.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+      loginInput.focus();
+    });
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  setupPasswordToggles();
+});
+
+// Handle registration with password validation
 registerForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const displayName = document.getElementById('displayName').value;
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
+
+  // Validate password
+  const passwordErrors = validatePassword(password);
+  if (passwordErrors.length > 0) {
+    showError(`<strong>Password requirements:</strong><br>${passwordErrors.join('<br>')}`);
+    return;
+  }
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -170,7 +214,10 @@ function getUserFriendlyError(errorCode) {
   const errors = {
     'auth/email-already-in-use': 'Email already in use. Please use another email.',
     'auth/invalid-email': 'Please enter a valid email address.',
-    'auth/weak-password': 'Password should be at least 6 characters with one number and one uppercase letter.',
+    'auth/weak-password': 'Password must meet the following requirements:<br>' +
+                         '• At least 8 characters<br>' +
+                         '• At least one number (0-9)<br>' +
+                         '• At least one uppercase letter (A-Z)',
     'auth/user-not-found': 'No account found with this email.',
     'auth/wrong-password': 'Incorrect password. Please try again.',
     'auth/too-many-requests': 'Too many attempts. Please try again later.',
