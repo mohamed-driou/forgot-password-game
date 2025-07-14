@@ -1,0 +1,27 @@
+{
+  "name": "forgot-password-game",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "live-server",
+    "start": "live-server",
+    "build": "echo \"Build process would go here\"",
+    "prepare": "echo \"Preparing for production\""
+  },
+  "keywords": [
+    "game",
+    "password",
+    "challenge",
+    "web-game"
+  ],
+  "author": "Your Name <mohamedadriou3@gmail.com>",
+  "license": "ISC",
+  "description": "A challenging game where players must create passwords following increasingly complex rules",
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  },
+  "dependencies": {
+    "firebase": "^11.10.0"
+  }
+}

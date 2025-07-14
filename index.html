@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forgot Password Game</title>
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Font Awesome for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="game-container">
+    <!-- Auth Header -->
+    <div class="auth-header">
+      <span class="welcome-message" id="welcomeUser"></span>
+      <button id="profileBtn" class="profile-btn">
+        <i class="fas fa-user-circle"></i> Profile
+      </button>
+      <button id="logoutBtn" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <h1>Forgot Password Game</h1>
+    <div class="scores">
+      <div class="score">Score: <span id="score">0</span></div>
+      <div id="high-score">Highest Score: 0</div>
+    </div>
+
+    <div class="rule-display" id="rule-text"></div>
+
+    <div class="timer-container">
+      <div class="timer" id="timer">10</div>
+      <div class="attempts">Attempts left: <span id="attempts">2</span></div>
+    </div>
+
+    <!-- Password input with copy/paste prevention -->
+    <input
+      type="text"
+      id="password-input"
+      placeholder="Enter password..."
+      oncopy="return false"
+      onpaste="return false"
+    />
+    <button id="submit-btn">Submit</button>
+  </div>
+
+  <!-- Script Module -->
+  <script type="module">
+    import { auth, onAuthStateChanged, signOut } from './js/auth.js';
+
+    // Auth state check
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = './auth/login.html';
+      } else {
+        const welcomeEl = document.getElementById('welcomeUser');
+        welcomeEl.textContent = `Welcome, ${user.displayName || user.email.split('@')[0]}!`;
+
+        // Load the game logic
+        import('./js/game.js').then((module) => {
+          module.initGame();
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          try {
+            await signOut(auth);
+            window.location.href = './auth/login.html';
+          } catch (error) {
+            console.error('Logout error:', error);
+            alert('Logout failed. Please try again.');
+          }
+        });
+
+        // Go to profile
+        document.getElementById('profileBtn').addEventListener('click', () => {
+          window.location.href = './profile/profile.html';
+        });
+      }
+    });
+  </script>
+
+  <!-- Extra JS for security: Disable copy/paste/cut/shortcut -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('password-input');
+
+      input.addEventListener('contextmenu', (e) => e.preventDefault()); // right-click
+      input.addEventListener('paste', (e) => e.preventDefault());
+      input.addEventListener('copy', (e) => e.preventDefault());
+      input.addEventListener('cut', (e) => e.preventDefault());
+
+      input.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && ['v', 'c', 'x'].includes(e.key.toLowerCase())) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

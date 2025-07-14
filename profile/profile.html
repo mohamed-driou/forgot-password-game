@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+  <link rel="stylesheet" href="../profile/profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+</head>
+<body>
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <!-- Replace this empty div with the profile info structure -->
+    <div id="profileInfo">
+      <img src="https://ui-avatars.com/api/?name=User&background=3498db&color=fff" 
+     alt="Profile Photo" 
+     class="profile-avatar"
+     id="profileAvatar">
+      <h3 class="profile-name">[display-name]</h3>
+      <p class="profile-email">[user-email]</p>
+      <div class="profile-stats">
+        <div class="stat-item">
+          <div class="stat-value">42</div>
+          <div class="stat-label">Wins</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">15</div>
+          <div class="stat-label">Level</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Badges</div>
+        </div>
+      </div>
+    </div>
+    <form id="updateProfileForm">
+      <input type="text" id="displayName" placeholder="Display Name">
+      <input type="text" id="photoURL" placeholder="Photo URL">
+      <button type="submit">Update Profile</button>
+    </form>
+    <button id="logoutBtn">Logout</button>
+  </div>
+  <script type="module" src="../js/auth.js"></script>
+  <script type="module" src="../js/user.js"></script>
+</body>
+</html>
