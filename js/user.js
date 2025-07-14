@@ -61,7 +61,7 @@ function validatePassword(password) {
   return errors;
 }
 
-// Password visibility toggle handler (FIXED VERSION)
+// Password visibility toggle handler
 function setupPasswordToggles() {
   // Register form toggle
   const registerToggle = document.getElementById('showRegisterPassword');
@@ -81,9 +81,9 @@ function setupPasswordToggles() {
     });
   }
 
-  // Login form toggle (if exists)
+  // Login form toggle
   const loginToggle = document.getElementById('showLoginPassword');
-  const loginInput = document.getElementById('loginPassword');
+  const loginInput = document.getElementById('password');
   
   if (loginToggle && loginInput) {
     loginToggle.addEventListener('click', () => {
