@@ -223,6 +223,41 @@ body {
   left: -15px;
 }
 
+/* Add to your existing auth.css */
+.password-rules {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border-left: 3px solid var(--primary-color);
+}
+
+.password-rules p {
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  color: var(--secondary-color);
+}
+
+.password-rules ul {
+  list-style-type: none;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding-left: 15px;
+}
+
+.password-rules li {
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.password-rules li:before {
+  content: "•";
+  color: var(--accent-color);
+  position: absolute;
+  left: -15px;
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .auth-container {
