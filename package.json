@@ -6,6 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "live-server",
     "start": "live-server",
+    "prebuild": "node build.js",
     "build": "echo \"Build process would go here\"",
     "prepare": "echo \"Preparing for production\""
   },

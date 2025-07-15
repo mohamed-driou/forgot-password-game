@@ -141,6 +141,6 @@ vite.config.ts.timestamp-*
 # Node modules
 node_modules
 
-# .gitignore
 .env
-node_modules/js/auth.js
+netlify.toml
+node_modules/
